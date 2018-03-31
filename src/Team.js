@@ -7,10 +7,15 @@ class Team extends Component {
         (this.props.ids).forEach((id, index) => {
 			slots.push(
                 <div className="col-2 slot" key={index}>
-					<Slot id={id} />
+					<Slot
+                        id={id}
+                        row={this.props.row}
+                        index={index}
+                        setId={this.props.setId}
+                        setSelection={this.props.setSelection} />
 				</div>
             );
-		})
+		});
 		
         return (
             <div className="row">
