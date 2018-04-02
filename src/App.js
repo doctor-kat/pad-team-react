@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Team from './Team';
 import AssistSpacer from './AssistSpacer';
-import Modal from './Modal';
+import MonsterDialog from './MonsterDialog';
 import './App.css';
+
 
 class App extends Component {
 	constructor(props) {
@@ -14,6 +15,7 @@ class App extends Component {
 				[0, 2948, 2540, 2540, 2948, 2903],
 				[0, 0, 2497, 998, 0, 2012]
 			],
+			modalState: false
 		};
 	};
 
@@ -48,9 +50,11 @@ class App extends Component {
 					setId={this.setId}
 					setSelection={this.setSelection} />
 			</div>
-			<Modal
+			<MonsterDialog
 				ids={this.state.ids}
-				setId={this.setId} />
+				setId={this.setId} 
+				modalState={this.state.modalState}
+				toggleModal={this.toggleModal} />
 		</div>
 		)
 	}
@@ -59,14 +63,24 @@ class App extends Component {
 		console.debug(`Set ${id} @ ${this.currentSelection.row}, ${this.currentSelection.index}.`);
 		let newIds = this.state.ids;
 		newIds[this.currentSelection.row][this.currentSelection.index] = id;
+		console.debug(`DEBUG: setting ids and toggling modal.`);
 		this.setState((prevState, props) => ({
-			ids: newIds
+			ids: newIds,
+			modalState: !prevState.modalState
+		}));
+	}
+	
+	toggleModal = () => {
+		console.debug(`DEBUG: toggling Modal...`);
+		this.setState((prevState, props) => ({
+			modalState: !prevState.modalState
 		}));
 	}
 
 	setSelection = (row, index) => {
 		this.currentSelection.row = row;
 		this.currentSelection.index = index;
+		this.toggleModal();
 		console.debug(`@ ${row}, ${index}.`);
 	};
 

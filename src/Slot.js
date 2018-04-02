@@ -5,10 +5,7 @@ class Slot extends Component {
 		if (this.props.id != null) {
 			const imgUrl = `/img/${this.props.id}.png`
 			return (
-				<a
-					data-toggle="modal"
-					data-target="#picker"
-					onClick={() => this.props.setSelection(this.props.row, this.props.index)}>
+				<a onClick={() => this.props.setSelection(this.props.row, this.props.index)}>
 					<img src={imgUrl} alt={this.props.id} />
 				</a>
 			);
