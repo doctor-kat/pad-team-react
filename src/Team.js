@@ -4,14 +4,14 @@ import Slot from './Slot';
 class Team extends Component {
 	render() {
         let slots = [];
-        (this.props.ids).forEach((id, index) => {
+        (this.props.monsters).forEach((monster, index) => {
 			slots.push(
                 <div className="col-2 slot" key={index}>
 					<Slot
-                        id={id}
+                        monster={monster}
                         row={this.props.row}
                         index={index}
-                        setId={this.props.setId}
+                        setSlot={this.props.setSlot}
                         setSelection={this.props.setSelection} />
 				</div>
             );

@@ -4,19 +4,12 @@ import { Button, Input } from 'reactstrap';
 import 'whatwg-fetch';
 
 class MonsterDialog extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			monsterList: []
-		}
-	}
-
 	render() {
 		let monsters = [];
-		for (let monster of this.state.monsterList) {
-			let imgUrl = 'https://www.padherder.com' + monster.image40_href;
+		for (let monster of this.props.monsterList) {
+			let imgUrl = monster.image60_href;
 			monsters.push(
-				<a key={monster.id} onClick={(e) => this.props.setId(monster.id)}>
+				<a key={monster.id} onClick={(e) => this.props.setSlot(monster)}>
 					<img src={imgUrl} alt={monster.id} />
 				</a>
 			);
@@ -31,7 +24,7 @@ class MonsterDialog extends Component {
 				<ModalBody>
 					<Input
 						style={{width: '100%'}}
-						onChange={this.applySearch} />
+						onChange={this.props.applySearch} />
 					{monsters}
 				</ModalBody>
 				<ModalFooter>
@@ -41,26 +34,10 @@ class MonsterDialog extends Component {
 			</Modal>
 		);
 	}
-
-	globalList = [];
 	
-	getMonsterData() {
-		let monsterUrl = 'https://www.padherder.com/api/monsters/';
-
-		fetch(monsterUrl)
-			.then(response => response.json())
-			.then((json) => {
-				this.globalList = json;
-				this.setState({monsterList: json.slice(0,100)});
-			});
-	}
-
-	componentDidMount() {
-		this.getMonsterData();
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
-		if (this.props.modalState && this.state.monsterList.length == nextState.monsterList.length) {
+		// console.debug(`modalState: ${this.props.modalState}, ${this.props.monsterList.length}, ${nextProps.monsterList.length}`);
+		if ((this.props.modalState === nextProps.modalState) && (this.props.monsterList.length === nextProps.monsterList.length)) {
 			return false;
 		} else {
 			return true;
@@ -68,51 +45,7 @@ class MonsterDialog extends Component {
 	}
 
 	componentDidUpdate() {
-		console.debug(`State was updated.`);
-	}
-
-	applySearch = (e) => {
-		let searchValue = e.target.value;
-		let filteredList = [];
-
-		if (searchValue.length >= 2) {
-				console.debug(`DEBUG: Searching for ${new RegExp(searchValue,"i")}`);
-				filteredList = this.globalList.filter(
-					(monster) => {
-						return monster.name.match(new RegExp(searchValue,"i"));
-					}
-				)
-			} /*else if ((this.currentAwakeningOptions.length > 0) && (this.searchValue.length < 2)) {
-				console.debug("DEBUG: Search length < 2.")
-				this.filteredList = this.globalList;
-			} else {
-				console.debug("DEBUG: Need at least one filter.");
-			}*/
-
-			/*if (filteredList) {
-				// re-apply sorting/filters
-				if (this.currentAwakeningOptions) {
-					console.debug("DEBUG: Filtering by awakenings.")
-					this.filteredList = this.filteredList.filterByAwakening(this.currentAwakeningOptions);
-				}
-
-				this.primaryAttributeFilter.forEach((enabled, attributeNumber) => {
-					if (enabled) {
-						this.filteredList = this.filteredList.filterByPrimaryAttribute(attributeNumber);
-					}
-				});
-			
-				// TODO: combine filterByAttribute functions together
-				this.subAttributeFilter.forEach((enabled, attributeNumber) => {
-					if (enabled) {
-						this.filteredList = this.filteredList.filterBySubAttribute(attributeNumber);
-					}
-				});
-
-				this.filteredList = this.filteredList.sortByStat(this.sortValue);*/
-
-		console.debug(`DEBUG: found ${filteredList.length} results.`)
-		this.setState({monsterList: filteredList});
+		console.debug(`Component was updated.`);
 	}
 
 }
