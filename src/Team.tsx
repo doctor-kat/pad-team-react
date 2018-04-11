@@ -14,7 +14,7 @@ class Team extends React.Component<Props, {}> {
         let slots: JSX.Element[] = [];
         (this.props.monsters).forEach((monster, index) => {
             slots.push(
-                <div className="col-2 slot" key={index}>
+                <div className="col-lg-2 col-md-2 col-sm-2 slot" key={index}>
                     <Slot
                         monster={monster}
                         row={this.props.row}

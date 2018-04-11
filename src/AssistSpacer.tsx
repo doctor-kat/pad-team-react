@@ -12,14 +12,14 @@ class AssistSpacer extends React.Component<Props, {}> {
         (this.props.monsters).forEach((monster, index) => {
             if (monster) {
                 elements.push(
-                    <div className="col-2 slot" key={index}>
+                    <div className="col-lg-2 col-md-2 col-sm-2 slot" key={index}>
                         <i className="material-icons">arrow_downward</i>
                         <i className="material-icons">arrow_upward</i>
                     </div>
                 );
             } else {
                 elements.push(
-                    <div className="col-2 slot" key={index}/>
+                    <div className="col-lg-2 col-md-2 col-sm-2 slot" key={index}/>
                 );
             }
         });
