@@ -7,3 +7,34 @@
 	padding: 25px;
 	margin: 25px;
 }
+
+.item {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.flex-list {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.carousel-inner {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.well {
+    height: 52px;
+}
+
+.flex-center {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
