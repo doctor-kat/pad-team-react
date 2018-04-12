@@ -9,7 +9,7 @@ interface Props {
     setSelection: (row: number, index: number) => void;
 }
 
-class Team extends React.Component<Props, {}> {
+class Row extends React.Component<Props, {}> {
     render() {
         let slots: JSX.Element[] = [];
         (this.props.monsters).forEach((monster, index) => {
@@ -34,4 +34,4 @@ class Team extends React.Component<Props, {}> {
     }
 }
 
-export default Team;
+export default Row;
