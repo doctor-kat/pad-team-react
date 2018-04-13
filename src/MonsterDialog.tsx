@@ -7,6 +7,8 @@ import './App.css';
 import { Carousel, Well } from 'react-bootstrap';
 import { Awakening } from './Awakening';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Collection } from 'react-virtualized';
+import 'react-virtualized/styles.css';
 
 interface Props {
     allAwakenings: Awakening[];
@@ -34,9 +36,37 @@ class MonsterDialog extends React.Component<Props, State> {
         };
     }
 
+    monsterTemplate = (o: { index: number, key: string, style: React.CSSProperties }): JSX.Element => {
+        const monster: Monster = this.state.monsterList[o.index];
+
+        return (
+            <div key={monster.id} style={o.style}>
+                <a onClick={() => this.props.setSlot(monster)}>
+                    <img
+                        src={monster.image60_href}
+                        alt={monster.id.toString()}
+                        width="60"
+                        height="60"
+                    />
+                </a>
+            </div>
+        );
+    }
+
+    sizeAndPosition = (o: { index: number }) => {
+        const width: number = 360;
+        
+        return {
+            height: 60,
+            width: 60,
+            x: (o.index * 60) % width,
+            y: Math.floor(o.index / (width / 60)) * 60
+        };
+    }
+
     render() {
         let sortOptions = this.getSortOptions();
-        let monsters = this.getMonsters();
+        // let monsters = this.getMonsters();
         // let allMonsters = this.getAllMonsters();
         let awakenings = this.getAwakenings();
         let allAwakenings = this.getAllAwakenings();
@@ -62,7 +92,15 @@ class MonsterDialog extends React.Component<Props, State> {
                             <div className="flex-center">{sortOptions}</div>
                         </Carousel.Item>
                         <Carousel.Item>
-                            <div className="flex-list">{monsters}</div>
+                            <Collection
+                                className="flex-center"
+                                cellCount={this.state.monsterList.length}
+                                cellRenderer={this.monsterTemplate}
+                                cellSizeAndPositionGetter={this.sizeAndPosition}
+                                verticalOverscanSize={200}
+                                height={300}
+                                width={385}
+                            />
                         </Carousel.Item>
                         <Carousel.Item>
                             Selected Awakenings:
@@ -78,7 +116,7 @@ class MonsterDialog extends React.Component<Props, State> {
             </Modal>
         );
     }
-    
+
     getSortOptions(): JSX.Element {
         return (
             <ToggleButtonGroup
@@ -98,17 +136,22 @@ class MonsterDialog extends React.Component<Props, State> {
 
     getMonsters(): JSX.Element[] {
         let monsters: JSX.Element[] = [];
-        for (let monster of this.state.monsterList) {
-            let imgUrl = monster.image60_href;
-            monsters.push(
-                <div key={monster.id}>
-                    <a onClick={() => this.props.setSlot(monster)}>
-                        <img src={imgUrl} alt={monster.id.toString()} />
-                    </a>
-                </div>
-            );
+        
+        if (this.state.monsterList) {
+            for (let monster of this.state.monsterList) {
+                let imgUrl = monster.image60_href;
+                monsters.push(
+                    <div key={monster.id}>
+                        <a onClick={() => this.props.setSlot(monster)}>
+                            <img src={imgUrl} alt={monster.id.toString()} />
+                        </a>
+                    </div>
+                );
+            }
+            return monsters;
+        } else {
+            return ([<div key={0} />]);
         }
-        return monsters;
     }
 
     getAllMonsters(): JSX.Element[] {
