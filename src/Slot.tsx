@@ -12,7 +12,7 @@ interface Props {
 class Slot extends React.Component<Props, {}> {
     render() {
         if (this.props.monster) {
-            const imgUrl = this.props.monster.image60_href;
+            const imgUrl = '.' + this.props.monster.image60_href;
             return (
                 <a onClick={() => this.props.setSelection(this.props.row, this.props.index)}>
                     <img

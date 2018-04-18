@@ -35087,7 +35087,7 @@ var Slot = /** @class */ (function (_super) {
     Slot.prototype.render = function () {
         var _this = this;
         if (this.props.monster) {
-            var imgUrl = this.props.monster.image60_href;
+            var imgUrl = '.' + this.props.monster.image60_href;
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("a", { onClick: function () { return _this.props.setSelection(_this.props.row, _this.props.index); } },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("img", { src: imgUrl, alt: this.props.monster.id.toString(), width: 45, height: 45 })));
         }
