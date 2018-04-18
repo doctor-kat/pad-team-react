@@ -1,11 +1,35 @@
+.container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .slot {
 	text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.slot img {
+    border-radius: 3px;
+}
+
+.slot a {
+    display: flex;
+    justify-content: center;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .team {
 	background-color: #ddd;
-	padding: 25px;
-	margin: 25px;
+	padding: 10px;
+	margin: 10px;
+    border-radius: 5px;
 }
 
 .item {
@@ -28,6 +52,17 @@
     margin: 0 auto;
 }
 
+.carousel-control {
+    width: 13%;
+    background-color: #aaa;
+    border-radius: 15px;
+    background-image: none !important;
+}
+
+.carousel-indicators {
+    visibility: hidden;
+}
+
 .well {
     height: 52px;
 }
@@ -35,6 +70,19 @@
 .flex-center {
     display: flex;
     height: 100%;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+}
+
+.inner-center {
+    text-align: center;
+}
+
+.placeholder {
+    text-align: center;
+    height: 45px;
+    width: 45px;
+    border: 2px dotted black;
+    border-radius: 8px;
+    box-sizing: border-box;
 }

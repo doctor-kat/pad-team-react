@@ -7,7 +7,7 @@ import MonsterDialog from './MonsterDialog';
 import './App.css';
 
 type State = {
-    monsters: [Monster[], Monster[], Monster[], Monster[]];
+    monsters: [(Monster|null)[], (Monster|null)[], (Monster|null)[], (Monster|null)[]];
     modalState: boolean;
     currentSelection: { row: number, index: number };
     allMonsters: Monster[];
@@ -37,12 +37,14 @@ class App extends React.Component<{}, State> {
                         monsters={this.state.monsters[0]}
                         setSlot={this.setSlot}
                         setSelection={this.setSelection}
+                        type="assist"
                     />
                     <Row
                         row={1}
                         monsters={this.state.monsters[1]}
                         setSlot={this.setSlot}
                         setSelection={this.setSelection}
+                        type="subs"
                     />
                 </div>
                 <div className="team">
@@ -51,12 +53,14 @@ class App extends React.Component<{}, State> {
                         monsters={this.state.monsters[2]}
                         setSlot={this.setSlot}
                         setSelection={this.setSelection}
+                        type="subs"
                     />
                     <Row
                         row={3}
                         monsters={this.state.monsters[3]}
                         setSlot={this.setSlot}
                         setSelection={this.setSelection}
+                        type="assist"
                     />
                 </div>
                 <MonsterDialog
@@ -92,7 +96,8 @@ class App extends React.Component<{}, State> {
             [0, 0, 2497, 998, 0, 2012]
             ];
 
-            let monsters: any = [[], [], [], []];
+            let monsters: [(Monster|null)[], (Monster|null)[], (Monster|null)[], (Monster|null)[]]
+                = [[], [], [], []];
 
             ids.forEach((idArray, row) => {
             idArray.forEach((id, index) => {
@@ -129,10 +134,16 @@ class App extends React.Component<{}, State> {
     setSlot = (monster: Monster) => {
         let row = this.state.currentSelection.row;
         let index = this.state.currentSelection.index;
-
-        console.debug(`Setting ${monster.name} @ ${row}, ${index}.`);
         let newMonsters = this.state.monsters;
-        newMonsters[row][index] = monster;
+
+        if (monster.id === undefined) {
+            console.debug(`Removing monster...`);
+            newMonsters[row][index] = null;
+        } else {
+            console.debug(`Setting ${monster.name} @ ${row}, ${index}.`);
+            newMonsters[row][index] = monster;
+        }
+
         console.debug(`DEBUG: setting monster and toggling modal.`);
         this.setState((prevState: any) => ({
             monsters: newMonsters,

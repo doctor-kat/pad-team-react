@@ -20,6 +20,7 @@ interface Props {
 
 interface State {
     activeIndex: number;
+    sortValue: string;
     searchValue: string;
     monsterList: Monster[];
     awakeningList: Awakening[];
@@ -30,6 +31,7 @@ class MonsterDialog extends React.Component<Props, State> {
         super(props);
         this.state = {
             activeIndex: 0,
+            sortValue: `total`,
             searchValue: ``,
             monsterList: [],
             awakeningList: [],
@@ -45,8 +47,8 @@ class MonsterDialog extends React.Component<Props, State> {
                     <img
                         src={monster.image60_href}
                         alt={monster.id.toString()}
-                        width="60"
-                        height="60"
+                        width="45"
+                        height="45"
                     />
                 </a>
             </div>
@@ -54,20 +56,19 @@ class MonsterDialog extends React.Component<Props, State> {
     }
 
     sizeAndPosition = (o: { index: number }) => {
-        const width: number = 360;
+        const size: number = 45;
+        const width: number = Math.floor((window.innerWidth - 22) * 0.70 / size) * size;
         
         return {
-            height: 60,
-            width: 60,
-            x: (o.index * 60) % width,
-            y: Math.floor(o.index / (width / 60)) * 60
+            height: size,
+            width: size,
+            x: (o.index * size) % width,
+            y: Math.floor(o.index / (width / size)) * size
         };
     }
 
     render() {
         let sortOptions = this.getSortOptions();
-        // let monsters = this.getMonsters();
-        // let allMonsters = this.getAllMonsters();
         let awakenings = this.getAwakenings();
         let allAwakenings = this.getAllAwakenings();
 
@@ -79,7 +80,7 @@ class MonsterDialog extends React.Component<Props, State> {
                 <Modal.Header closeButton={true}>
                     <FormControl
                         type="text"
-                        style={{width: '100%'}}
+                        style={{width: '95%'}}
                         onChange={this.applySearch}
                     />
                 </Modal.Header>
@@ -89,29 +90,44 @@ class MonsterDialog extends React.Component<Props, State> {
                         defaultActiveIndex={1}
                     >
                         <Carousel.Item>
-                            <div className="flex-center">{sortOptions}</div>
+                            <div className="flex-center">
+                                <div className="inner-center">
+                                    <div>Sorting Options:</div>
+                                    {sortOptions}
+                                </div>
+                            </div>
                         </Carousel.Item>
                         <Carousel.Item>
-                            <Collection
-                                className="flex-center"
-                                cellCount={this.state.monsterList.length}
-                                cellRenderer={this.monsterTemplate}
-                                cellSizeAndPositionGetter={this.sizeAndPosition}
-                                verticalOverscanSize={200}
-                                height={300}
-                                width={385}
-                            />
+                            <div className="flex-center">
+                                <div className="inner-center">
+                                    <div>Monsters:</div>
+                                    <Collection
+                                        className="flex-center"
+                                        cellCount={this.state.monsterList.length}
+                                        cellRenderer={this.monsterTemplate}
+                                        cellSizeAndPositionGetter={this.sizeAndPosition}
+                                        verticalOverscanSize={200}
+                                        height={300}
+                                        width={Math.floor((window.innerWidth - 22) * 0.70 / 45) * 45}
+                                        monsterList={this.state.monsterList}
+                                    />
+                                </div>
+                            </div>
                         </Carousel.Item>
                         <Carousel.Item>
-                            Selected Awakenings:
-                            <Well className="flex-list">{awakenings}</Well>
-                            <div className="flex-list">{allAwakenings}</div>
+                            <div className="flex-center">
+                                <div className="inner-center">
+                                    <div>Selected Awakenings:</div>
+                                    <Well className="flex-list">{awakenings}</Well>
+                                    <div className="flex-list">{allAwakenings}</div>
+                                </div>
+                            </div>
                         </Carousel.Item>
                     </Carousel>
                 </Modal.Body>
                 <Modal.Footer>
+                    <Button color="secondary" onClick={() => this.props.setSlot(new Monster)}>Remove</Button>
                     <Button color="secondary" onClick={this.props.toggleModal}>Close</Button>
-                    <Button color="primary" onClick={this.props.toggleModal}>Save changes</Button>
                 </Modal.Footer>
             </Modal>
         );
@@ -120,18 +136,24 @@ class MonsterDialog extends React.Component<Props, State> {
     getSortOptions(): JSX.Element {
         return (
             <ToggleButtonGroup
+                className="btn-group-vertical"
                 type="radio"
                 name="sortOptions"
-                value={() => { console.log(``); }}
-                onChange={() => { console.log(``); }}
+                value={this.state.sortValue}
+                onChange={this.setSortOptions}
                 defaultValue={'Total'}
             >
-                <ToggleButton value={'HP'}>HP</ToggleButton>
-                <ToggleButton value={'ATK'}>ATK</ToggleButton>
-                <ToggleButton value={'RCV'}>RCV</ToggleButton>
-                <ToggleButton value={'Total'}>Total</ToggleButton>
+                <ToggleButton value={'id'}>#</ToggleButton>
+                <ToggleButton value={'hp'}>HP</ToggleButton>
+                <ToggleButton value={'atk'}>ATK</ToggleButton>
+                <ToggleButton value={'rcv'}>RCV</ToggleButton>
+                <ToggleButton value={'total'}>Total</ToggleButton>
             </ToggleButtonGroup>
         );
+    }
+
+    setSortOptions = (e: any): void => {
+        this.applySearch(null, undefined, e);
     }
 
     getMonsters(): JSX.Element[] {
@@ -223,14 +245,10 @@ class MonsterDialog extends React.Component<Props, State> {
         this.applySearch(null, newAwakeningList);
     }
 
-    applySearch = (e: any, a?: Awakening[]) => {
-        let searchValue: string;
-        if (e) { searchValue = e.target.value; }
-        else { searchValue = this.state.searchValue; }
-
-        let awakeningList: Awakening[];
-        if (a) { awakeningList = a; }
-        else { awakeningList = this.state.awakeningList; }
+    applySearch = (e: any, a?: Awakening[], s?: string) => {
+        let searchValue: string = e ? e.target.value : this.state.searchValue;
+        let awakeningList: Awakening[] = a ? a : this.state.awakeningList;
+        let sortValue: string = s ? s : this.state.sortValue;
 
         let filteredList: Monster[] = [];
 
@@ -268,13 +286,15 @@ class MonsterDialog extends React.Component<Props, State> {
             //     }
             // });
 
-            // filteredList = filteredList.sortByStat(this.sortValue);
+            console.debug(`DEBUG: Sorting by ${sortValue}`);
+            filteredList = filteredList.sortByStat(sortValue);
 
             console.debug(`DEBUG: found ${filteredList.length} results.`);
             this.setState({
                 awakeningList: awakeningList,
                 monsterList: filteredList,
-                searchValue: searchValue
+                searchValue: searchValue,
+                sortValue: sortValue
             });
         }
     }
@@ -282,7 +302,8 @@ class MonsterDialog extends React.Component<Props, State> {
     shouldComponentUpdate(nextProps: Props, nextState: State) {
         if (this.props.modalState === nextProps.modalState) {
             if ((this.state.monsterList.length === nextState.monsterList.length)
-                && (this.state.awakeningList.length === nextState.awakeningList.length)) {
+                && (this.state.awakeningList.length === nextState.awakeningList.length)
+                && (this.state.sortValue === nextState.sortValue)) {
                 return false;
             } else {
                 return true;
