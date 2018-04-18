@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts-ts start",
-    "build": "webpack",
+    "build": "webpack --config ./webpack/webpack.config.js",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "dev": "webpack-dev-server --config ./webpack/webpack.config.js"

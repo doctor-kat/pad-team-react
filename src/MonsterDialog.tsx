@@ -57,7 +57,7 @@ class MonsterDialog extends React.Component<Props, State> {
             <div key={monster.id} style={o.style}>
                 <a onClick={() => this.props.setSlot(monster)}>
                     <img
-                        src={monster.image60_href}
+                        src={'.' + monster.image60_href}
                         alt={monster.id.toString()}
                         width="45"
                         height="45"
@@ -174,7 +174,7 @@ class MonsterDialog extends React.Component<Props, State> {
         
         if (this.state.monsterList) {
             for (let monster of this.state.monsterList) {
-                let imgUrl = monster.image60_href;
+                let imgUrl = '.' + monster.image60_href;
                 monsters.push(
                     <div key={monster.id}>
                         <a onClick={() => this.props.setSlot(monster)}>
@@ -193,7 +193,7 @@ class MonsterDialog extends React.Component<Props, State> {
         let monsters: JSX.Element[] = [];
 
         for (let monster of this.props.allMonsters) {
-            let imgUrl = monster.image60_href;
+            let imgUrl = '.' + monster.image60_href;
             monsters.push(
                 <div key={monster.id}>
                     <a onClick={() => this.props.setSlot(monster)}>
@@ -212,7 +212,7 @@ class MonsterDialog extends React.Component<Props, State> {
 
         for (let awakening in selectedAwakenings) {
             if (selectedAwakenings.hasOwnProperty(awakening)) {
-                let imgUrl = `/static/img/awakenings/${selectedAwakenings[awakening].id}.png`;
+                let imgUrl = `./static/img/awakenings/${selectedAwakenings[awakening].id}.png`;
                 awakenings.push(
                     <div key={Number(awakening)}>
                         <a onClick={() => this.removeAwakening(Number(awakening))}>
@@ -231,7 +231,7 @@ class MonsterDialog extends React.Component<Props, State> {
         let awakenings: JSX.Element[] = [];
 
         for (let awakening of this.props.allAwakenings) {
-            let imgUrl = `/static/img/awakenings/${awakening.id}.png`;
+            let imgUrl = `./static/img/awakenings/${awakening.id}.png`;
             awakenings.push(
                 <div key={awakening.id}>
                     <a onClick={() => this.addAwakening(awakening)}>

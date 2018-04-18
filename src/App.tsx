@@ -79,7 +79,7 @@ class App extends React.Component<{}, State> {
     // ==============
 
     getMonsterData() {
-        let monsterUrl = '/static/monsters.json';
+        let monsterUrl = './static/monsters.json';
 
         fetch(monsterUrl)
         .then(response => response.json())
@@ -116,7 +116,7 @@ class App extends React.Component<{}, State> {
     }
 
     getAwakeningData() {
-        let awakeningUrl = '/static/awakenings.json';
+        let awakeningUrl = './static/awakenings.json';
 
         fetch(awakeningUrl)
         .then(response => response.json())
