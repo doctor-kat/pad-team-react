@@ -8,7 +8,6 @@ import { Carousel, Well } from 'react-bootstrap';
 import { Awakening } from './Awakening';
 import { ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { Collection } from 'react-virtualized';
-import 'react-virtualized/styles.css';
 
 interface Props {
     allAwakenings: Awakening[];
@@ -38,6 +37,19 @@ class MonsterDialog extends React.Component<Props, State> {
         };
     }
 
+    getMonsterWidth = (): number => {
+        let width: number;
+        const size: number = 45;
+        
+        if (window.outerWidth > 768) {
+            width = Math.floor((598 - 22 - 30) * 0.70 / size) * size
+        } else {
+            width = Math.floor((window.innerWidth - 22 - 30) * 0.70 / size) * size;
+        }
+
+        return width;
+    }
+
     monsterTemplate = (o: { index: number, key: string, style: React.CSSProperties }): JSX.Element => {
         const monster: Monster = this.state.monsterList[o.index];
 
@@ -56,8 +68,8 @@ class MonsterDialog extends React.Component<Props, State> {
     }
 
     sizeAndPosition = (o: { index: number }) => {
-        const size: number = 45;
-        const width: number = Math.floor((window.innerWidth - 22) * 0.70 / size) * size;
+        const size = 45;
+        const width = this.getMonsterWidth();
         
         return {
             height: size,
@@ -80,6 +92,7 @@ class MonsterDialog extends React.Component<Props, State> {
                 <Modal.Header closeButton={true}>
                     <FormControl
                         type="text"
+                        placeholder="Enter monster name..."
                         style={{width: '95%'}}
                         onChange={this.applySearch}
                     />
@@ -108,7 +121,7 @@ class MonsterDialog extends React.Component<Props, State> {
                                         cellSizeAndPositionGetter={this.sizeAndPosition}
                                         verticalOverscanSize={200}
                                         height={300}
-                                        width={Math.floor((window.innerWidth - 22) * 0.70 / 45) * 45}
+                                        width={this.getMonsterWidth()}
                                         monsterList={this.state.monsterList}
                                     />
                                 </div>

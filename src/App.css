@@ -1,6 +1,8 @@
 .container {
     padding-left: 0;
     padding-right: 0;
+    width: auto;
+    max-width: 400px;
 }
 
 .slot {
@@ -9,6 +11,7 @@
     padding-right: 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .slot img {
@@ -44,7 +47,6 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    
 }
 
 .carousel-inner {
@@ -72,6 +74,7 @@
     height: 100%;
     align-items: flex-start;
     justify-content: center;
+    overflow-y: hidden;
 }
 
 .inner-center {
